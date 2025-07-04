@@ -1,56 +1,17 @@
 package org.example;
 
-public class BankAccount {
-    private int accountNumber;
-    private String holderName;
-    private double balance;
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class Main {
+    public static void main(String[] args) {
+        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
+        // to see how IntelliJ IDEA suggests fixing it.
+        System.out.printf("Hello and welcome!");
 
-    public BankAccount(int accountNumber, String holderName, double initialDeposit) {
-        this.accountNumber = accountNumber;
-        this.holderName = holderName;
-
-        if(initialDeposit >= 0) {
-            this.balance = initialDeposit;
+        for (int i = 1; i <= 5; i++) {
+            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
+            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
+            System.out.println("i = " + i);
         }
-        else {
-            this.balance = 0;
-        }
-    }
-
-    public int getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void depositMoney(double amount) {
-        if (amount <= 0) {
-            System.out.println("Deposit amount must be positive.");
-        }
-        else {
-            balance += amount;
-            System.out.println("Deposit successful.");
-        }
-    }
-
-    public void withdrawMoney(double amount) {
-        if (amount <= 0) {
-            System.out.println("Withdrawal amount must be positive.");
-        }
-        else if (amount > balance) {
-            System.out.println("Error: Insufficient balance.");
-        }
-        else {
-            balance -= amount;
-            System.out.println("Withdrawal successful.");
-        }
-    }
-
-    public void displayInfo() {
-        System.out.println("Account Number: " + accountNumber);
-        System.out.println("Holder Name: " + holderName);
-        System.out.println("Balance: " + balance);
-    }
-
-    public double getBalance() {
-        return balance;
     }
 }
