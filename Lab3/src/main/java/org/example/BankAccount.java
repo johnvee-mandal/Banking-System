@@ -7,39 +7,29 @@ public class BankAccount {
     private int accountNumber;
     private String holderName;
     private double balance;
-<<<<<<< HEAD
-    private String accountType;
-=======
-    private String accountType; // "savings" or "checking"
->>>>>>> origin/main
     private double initialBalance;
+    private String accountType;
 
-    public BankAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
+    private BankAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
         this.accountType = accountType;
         this.accountNumber = accountNumber;
         this.holderName = holderName;
         this.balance = Math.max(0, initialDeposit);
         this.initialBalance = this.balance;
-<<<<<<< HEAD
-=======
     }
 
+    // Factory + Singleton combined
     public static BankAccount createAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
-
-        if (instance == null) {
-            instance = new BankAccount(accountType, accountNumber, holderName, initialDeposit);
-            System.out.println("Account created successfully!");
+        if (instance != null) return null; // Only one account allowed
+        if (!"savings".equalsIgnoreCase(accountType) && !"checking".equalsIgnoreCase(accountType)) {
+            return null; // invalid type
         }
-
+        instance = new BankAccount(accountType, accountNumber, holderName, initialDeposit);
         return instance;
     }
 
     public static BankAccount getInstance() {
-        if (instance == null) {
-            System.out.println("No account has been created yet.");
-        }
         return instance;
->>>>>>> origin/main
     }
 
     public int getAccountNumber() {
@@ -83,39 +73,18 @@ public class BankAccount {
         }
     }
 
-<<<<<<< HEAD
     public void addInterest() {
-        if ("savings".equalsIgnoreCase(this.accountType)) {
-            this.balance *= 1.06;
-        } else if ("checking".equalsIgnoreCase(this.accountType)) {
-            this.balance *= 1.01;
+        if ("savings".equalsIgnoreCase(accountType)) {
+            balance *= 1.06;
+        } else if ("checking".equalsIgnoreCase(accountType)) {
+            balance *= 1.01;
         }
     }
 
-=======
->>>>>>> origin/main
     public void displayInfo() {
         System.out.println("Account Type: " + accountType);
         System.out.println("Account Number: " + accountNumber);
         System.out.println("Holder Name: " + holderName);
-        System.out.println("Balance: " + String.format("%.2f", balance));
-    }
-
-    public double getInitialBalance() {
-        return initialBalance;
-    }
-
-    public void addInterest (){
-        if(this.getAccountType().equalsIgnoreCase("Savings")){
-            balance *= 1.06; //Adds 6% to this balance
-        }
-        else{
-            balance *= 1.01; //Adds 1% to this balance
-        }
-    }
-
-    public static void resetInstance() {
-        instance = null;
-        System.out.println("Singleton instance reset.");
+        System.out.printf("Balance: %.2f%n", balance);
     }
 }

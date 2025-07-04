@@ -1,13 +1,11 @@
 package org.example;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
 
-    private static BankAccount bankAccount;
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         while (true) {
@@ -20,31 +18,21 @@ public class Main {
             System.out.println("6. Exit");
 
             System.out.print("Enter choice: ");
-            int currentChoice = getUserChoice();
+            int choice = getUserChoice();
 
-            switch (currentChoice) {
-                case 1:
-                    createAccount();
-                    break;
-                case 2:
-                    depositMoney();
-                    break;
-                case 3:
-                    withdrawMoney();
-                    break;
-                case 4:
-                    addInterest();
-                    break;
-                case 5:
-                    displayAccount();
-                    break;
-                case 6:
+            switch (choice) {
+                case 1 -> createAccount();
+                case 2 -> depositMoney();
+                case 3 -> withdrawMoney();
+                case 4 -> addInterest();
+                case 5 -> displayAccount();
+                case 6 -> {
                     System.out.println("----------------------------------------");
                     System.out.println("Thank you for using our banking service!");
                     System.out.println("----------------------------------------");
                     return;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+                }
+                default -> System.out.println("Invalid option. Please try again.");
             }
         }
     }
@@ -55,13 +43,12 @@ public class Main {
         } catch (InputMismatchException e) {
             return -1;
         } finally {
-            scanner.nextLine();
+            scanner.nextLine(); // consume newline
         }
     }
 
     private static void createAccount() {
-
-        if (bankAccount != null) {
+        if (BankAccount.getInstance() != null) {
             System.out.println("An account already exists. Only one account is allowed.");
             return;
         }
@@ -80,106 +67,61 @@ public class Main {
         double deposit = scanner.nextDouble();
         scanner.nextLine();
 
-<<<<<<< HEAD
-        BankAccount newAccount = AccountFactory.createAccount(accountType, accountNumber, name, deposit);
-
-        if (newAccount != null) {
-            bankAccounts.add(newAccount);
-            System.out.println("Account created successfully!");
+        BankAccount created = BankAccount.createAccount(accountType, accountNumber, name, deposit);
+        if (created == null) {
+            System.out.println("Invalid account type. Account not created.");
         } else {
-            System.out.println("Invalid account type. Please enter 'savings' or 'checking'.");
+            System.out.println("Account created successfully!");
         }
-=======
-        bankAccount = new BankAccount(accountType, accountNumber, name, deposit);
-        System.out.println("Account created successfully!");
->>>>>>> origin/main
     }
 
     private static void depositMoney() {
-
-        if (bankAccount != null) {
+        BankAccount account = BankAccount.getInstance();
+        if (account != null) {
             System.out.print("Enter deposit amount: ");
             double amount = scanner.nextDouble();
             scanner.nextLine();
-            bankAccount.depositMoney(amount);
+            account.depositMoney(amount);
         } else {
             System.out.println("Account not found.");
         }
     }
 
     private static void withdrawMoney() {
-        if (bankAccount != null) {
+        BankAccount account = BankAccount.getInstance();
+        if (account != null) {
             System.out.print("Enter withdrawal amount: ");
             double amount = scanner.nextDouble();
             scanner.nextLine();
-            bankAccount.withdrawMoney(amount);
+            account.withdrawMoney(amount);
         } else {
             System.out.println("Account not found.");
         }
     }
 
-<<<<<<< HEAD
     private static void addInterest() {
-        System.out.print("Enter account number: ");
-        int accountNumber = scanner.nextInt();
-        scanner.nextLine();
-        BankAccount bankAccount = findAccount(accountNumber);
+        BankAccount account = BankAccount.getInstance();
+        if (account != null) {
+            double before = account.getBalance();
+            account.addInterest();
+            double interest = account.getBalance() - before;
 
-        if (bankAccount != null) {
-            double balanceBeforeInterest = bankAccount.getBalance();
-            bankAccount.addInterest();
-            double interestEarned = bankAccount.getBalance() - balanceBeforeInterest;
-
-            System.out.println("----------------------");
-            System.out.println("Computing interest for Account# " + accountNumber);
-            System.out.printf("Interest earned: %.2f%n", interestEarned);
-            System.out.printf("New balance: %.2f%n", bankAccount.getBalance());
-            System.out.println("----------------------");
+            System.out.printf("Computing interest for account %d%n", account.getAccountNumber());
+            System.out.printf("Interest earned: %.2f%n", interest);
+            System.out.printf("New balance: %.2f%n", account.getBalance());
         } else {
             System.out.println("Account not found.");
         }
     }
 
-=======
->>>>>>> origin/main
     private static void displayAccount() {
-
-        if (bankAccount != null) {
+        BankAccount account = BankAccount.getInstance();
+        if (account != null) {
             System.out.println("--- Account Information ---");
-            bankAccount.displayInfo();
+            account.displayInfo();
             System.out.println("---------------------------");
         } else {
             System.out.println("Account not found.");
         }
     }
-<<<<<<< HEAD
 }
-
-class AccountFactory {
-    public static BankAccount createAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
-        if ("savings".equalsIgnoreCase(accountType) || "checking".equalsIgnoreCase(accountType)) {
-            return new BankAccount(accountType, accountNumber, holderName, initialDeposit);
-        }
-        return null;
-    }
-}
-=======
-    private static void addInterest() {
-
-        if (bankAccount != null) {
-
-            bankAccount.addInterest();
-            double interestEarned = bankAccount.getBalance() - bankAccount.getInitialBalance();
-
-            System.out.printf("Computing interest for account %d" + "\n", bankAccount.getAccountNumber());
-            System.out.printf("Interest earned: %.2f" + "\n", interestEarned);
-            System.out.printf("New balance: %.2f" + "\n", bankAccount.getBalance());
-
-        }
-        else {
-            System.out.println("Account not found.");
-        }
-    }
-
-}
->>>>>>> origin/main
