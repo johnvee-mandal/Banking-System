@@ -54,6 +54,7 @@ public class BankAccount {
     public void depositMoney(double amount) {
         if (amount > 0) {
             balance += amount;
+            initialBalance += amount;
             System.out.println("Deposit successful.");
         } else {
             System.out.println("Deposit amount must be positive.");
@@ -84,10 +85,10 @@ public class BankAccount {
 
     public void addInterest (){
         if(this.getAccountType().equalsIgnoreCase("Savings")){
-            this.balance *= 1.06; //Adds 6% to this balance
+            balance *= 1.06; //Adds 6% to this balance
         }
         else{
-            this.balance *= 1.01; //Adds 1% to this balance
+            balance *= 1.01; //Adds 1% to this balance
         }
     }
 
