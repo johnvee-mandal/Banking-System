@@ -7,10 +7,9 @@ public class BankAccount {
     private int accountNumber;
     private String holderName;
     private double balance;
-    private String accountType; // "savings" or "checking"
+    private String accountType; 
     private double initialBalance;
 
-    // Private constructor for Singleton
     private BankAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
         this.accountType = accountType.toLowerCase();
         this.accountNumber = accountNumber;
@@ -19,7 +18,6 @@ public class BankAccount {
         this.initialBalance = this.balance;
     }
 
-    // Factory method
     public static BankAccount createAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
         if (instance == null && (accountType.equalsIgnoreCase("savings") || accountType.equalsIgnoreCase("checking"))) {
             instance = new BankAccount(accountType, accountNumber, holderName, initialDeposit);
