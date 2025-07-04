@@ -7,29 +7,37 @@ public class BankAccount {
     private int accountNumber;
     private String holderName;
     private double balance;
+    private String accountType; // "savings" or "checking"
     private double initialBalance;
-    private String accountType;
 
+    // Private constructor for Singleton
     private BankAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
-        this.accountType = accountType;
+        this.accountType = accountType.toLowerCase();
         this.accountNumber = accountNumber;
         this.holderName = holderName;
         this.balance = Math.max(0, initialDeposit);
         this.initialBalance = this.balance;
     }
 
-    // Factory + Singleton combined
+    // Factory method
     public static BankAccount createAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
-        if (instance != null) return null; // Only one account allowed
-        if (!"savings".equalsIgnoreCase(accountType) && !"checking".equalsIgnoreCase(accountType)) {
-            return null; // invalid type
+        if (instance == null && (accountType.equalsIgnoreCase("savings") || accountType.equalsIgnoreCase("checking"))) {
+            instance = new BankAccount(accountType, accountNumber, holderName, initialDeposit);
+            System.out.println("Account created successfully!");
+        } else if (instance != null) {
+            System.out.println("An account already exists. Only one account is allowed.");
+        } else {
+            System.out.println("Invalid account type.");
         }
-        instance = new BankAccount(accountType, accountNumber, holderName, initialDeposit);
         return instance;
     }
 
     public static BankAccount getInstance() {
         return instance;
+    }
+
+    public static void resetInstanceForTesting() {
+        instance = null;
     }
 
     public int getAccountNumber() {

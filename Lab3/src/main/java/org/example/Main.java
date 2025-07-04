@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static final Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         while (true) {
@@ -21,18 +21,28 @@ public class Main {
             int choice = getUserChoice();
 
             switch (choice) {
-                case 1 -> createAccount();
-                case 2 -> depositMoney();
-                case 3 -> withdrawMoney();
-                case 4 -> addInterest();
-                case 5 -> displayAccount();
-                case 6 -> {
+                case 1:
+                    createAccount();
+                    break;
+                case 2:
+                    depositMoney();
+                    break;
+                case 3:
+                    withdrawMoney();
+                    break;
+                case 4:
+                    computeInterest();
+                    break;
+                case 5:
+                    displayAccount();
+                    break;
+                case 6:
                     System.out.println("----------------------------------------");
                     System.out.println("Thank you for using our banking service!");
                     System.out.println("----------------------------------------");
                     return;
-                }
-                default -> System.out.println("Invalid option. Please try again.");
+                default:
+                    System.out.println("Invalid option. Please try again.");
             }
         }
     }
@@ -43,36 +53,26 @@ public class Main {
         } catch (InputMismatchException e) {
             return -1;
         } finally {
-            scanner.nextLine(); // consume newline
+            scanner.nextLine(); // clear newline
         }
     }
 
     private static void createAccount() {
-        if (BankAccount.getInstance() != null) {
-            System.out.println("An account already exists. Only one account is allowed.");
-            return;
-        }
-
         System.out.print("Enter Account Type (savings/checking): ");
-        String accountType = scanner.nextLine();
+        String type = scanner.nextLine();
 
         System.out.print("Enter Account Number: ");
-        int accountNumber = scanner.nextInt();
+        int number = scanner.nextInt();
         scanner.nextLine();
 
         System.out.print("Enter Holder Name: ");
         String name = scanner.nextLine();
 
-        System.out.print("Enter initial deposit amount: ");
+        System.out.print("Enter Initial Deposit: ");
         double deposit = scanner.nextDouble();
         scanner.nextLine();
 
-        BankAccount created = BankAccount.createAccount(accountType, accountNumber, name, deposit);
-        if (created == null) {
-            System.out.println("Invalid account type. Account not created.");
-        } else {
-            System.out.println("Account created successfully!");
-        }
+        BankAccount.createAccount(type, number, name, deposit);
     }
 
     private static void depositMoney() {
@@ -83,7 +83,7 @@ public class Main {
             scanner.nextLine();
             account.depositMoney(amount);
         } else {
-            System.out.println("Account not found.");
+            System.out.println("No account found.");
         }
     }
 
@@ -95,22 +95,20 @@ public class Main {
             scanner.nextLine();
             account.withdrawMoney(amount);
         } else {
-            System.out.println("Account not found.");
+            System.out.println("No account found.");
         }
     }
 
-    private static void addInterest() {
+    private static void computeInterest() {
         BankAccount account = BankAccount.getInstance();
         if (account != null) {
             double before = account.getBalance();
             account.addInterest();
             double interest = account.getBalance() - before;
-
-            System.out.printf("Computing interest for account %d%n", account.getAccountNumber());
             System.out.printf("Interest earned: %.2f%n", interest);
             System.out.printf("New balance: %.2f%n", account.getBalance());
         } else {
-            System.out.println("Account not found.");
+            System.out.println("No account found.");
         }
     }
 
@@ -121,7 +119,7 @@ public class Main {
             account.displayInfo();
             System.out.println("---------------------------");
         } else {
-            System.out.println("Account not found.");
+            System.out.println("No account found.");
         }
     }
 }
