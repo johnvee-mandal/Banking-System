@@ -17,12 +17,11 @@ class BankAccountTest {
     }
 
     @Test
-    void testBankAccountCreation(){
+    void testSingletonBankAccountCreation(){
         BankAccount accountCreationTest_Savings = new BankAccount("savings", 3, "Jack Doe", 1000);
         BankAccount accountCreationTest_Checking = new BankAccount("checking", 3, "Jamarcus Doe", 1000);
 
-        assertNotNull(accountCreationTest_Savings);
-        assertNotNull(accountCreationTest_Checking);
+        assertSame(accountCreationTest_Checking, accountCreationTest_Checking);
     }
 
     @Test
