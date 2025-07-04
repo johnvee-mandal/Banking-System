@@ -1,17 +1,42 @@
 package org.example;
 
-public abstract class BankAccount {
-    protected int accountNumber;
-    protected String holderName;
-    protected double balance;
+public class BankAccount {
 
-    public BankAccount(int accountNumber, String holderName, double initialDeposit) {
+    private static BankAccount instance;
+
+    private int accountNumber;
+    private String holderName;
+    private double balance;
+    private String accountType; 
+    private double initialBalance;
+
+    private BankAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
+        this.accountType = accountType.toLowerCase();
         this.accountNumber = accountNumber;
         this.holderName = holderName;
         this.balance = Math.max(0, initialDeposit);
+        this.initialBalance = this.balance;
     }
 
-    public abstract void computeInterest();
+    public static BankAccount createAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
+        if (instance == null && (accountType.equalsIgnoreCase("savings") || accountType.equalsIgnoreCase("checking"))) {
+            instance = new BankAccount(accountType, accountNumber, holderName, initialDeposit);
+            System.out.println("Account created successfully!");
+        } else if (instance != null) {
+            System.out.println("An account already exists. Only one account is allowed.");
+        } else {
+            System.out.println("Invalid account type.");
+        }
+        return instance;
+    }
+
+    public static BankAccount getInstance() {
+        return instance;
+    }
+
+    public static void resetInstanceForTesting() {
+        instance = null;
+    }
 
     public int getAccountNumber() {
         return accountNumber;
@@ -25,9 +50,18 @@ public abstract class BankAccount {
         return balance;
     }
 
+    public double getInitialBalance() {
+        return initialBalance;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
     public void depositMoney(double amount) {
         if (amount > 0) {
             balance += amount;
+            initialBalance += amount;
             System.out.println("Deposit successful.");
         } else {
             System.out.println("Deposit amount must be positive.");
@@ -45,41 +79,17 @@ public abstract class BankAccount {
         }
     }
 
+    public void addInterest() {
+        if ("savings".equalsIgnoreCase(accountType)) {
+            balance *= 1.06;
+        } else if ("checking".equalsIgnoreCase(accountType)) {
+            balance *= 1.01;
+        }
+    }
+
     public void displayInfo() {
         System.out.println("Account Number: " + accountNumber);
         System.out.println("Holder Name: " + holderName);
-        System.out.println("Balance: " + String.format("%.2f", balance));
-    }
-}
-
-class SavingsAccount extends BankAccount {
-    private static final double INTEREST_RATE = 0.06; 
-
-    public SavingsAccount(int accountNumber, String holderName, double initialDeposit) {
-        super(accountNumber, holderName, initialDeposit);
-    }
-
-    @Override
-    public void computeInterest() {
-        double interest = balance * INTEREST_RATE;
-        balance += interest;
-        System.out.println("Interest earned: " + String.format("%.2f", interest));
-        System.out.println("New balance: " + String.format("%.2f", balance));
-    }
-}
-
-class CheckingAccount extends BankAccount {
-    private static final double INTEREST_RATE = 0.01;
-
-    public CheckingAccount(int accountNumber, String holderName, double initialDeposit) {
-        super(accountNumber, holderName, initialDeposit);
-    }
-
-    @Override
-    public void computeInterest() {
-        double interest = balance * INTEREST_RATE;
-        balance += interest;
-        System.out.println("Interest earned: " + String.format("%.2f", interest));
-        System.out.println("New balance: " + String.format("%.2f", balance));
+        System.out.printf("Balance: %.2f%n", balance);
     }
 }
