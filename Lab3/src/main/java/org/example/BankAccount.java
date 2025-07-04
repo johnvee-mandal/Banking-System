@@ -4,6 +4,7 @@ public class BankAccount {
     private int accountNumber;
     private String holderName;
     private double balance;
+    private double initialBalance;
 
     public BankAccount(int accountNumber, String holderName, double initialDeposit) {
         this.accountNumber = accountNumber;
@@ -11,9 +12,11 @@ public class BankAccount {
 
         if(initialDeposit >= 0) {
             this.balance = initialDeposit;
+            this.initialBalance = initialDeposit;
         }
         else {
             this.balance = 0;
+            this.initialBalance = 0;
         }
     }
 
@@ -52,5 +55,13 @@ public class BankAccount {
 
     public double getBalance() {
         return balance;
+    }
+
+    public double getInitialBalance() {
+        return initialBalance;
+    }
+
+    public void addInterest (){
+        balance *= 1.06; //Adds 6% to balance
     }
 }

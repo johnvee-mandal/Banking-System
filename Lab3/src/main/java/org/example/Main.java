@@ -16,7 +16,7 @@ public class Main {
             System.out.println("1. Create Account");
             System.out.println("2. View All Accounts");
             System.out.println("3. Check Balance");
-            System.out.println("4. Deposit");
+            System.out.println("4. Compute Interest");
             System.out.println("5. Withdraw");
             System.out.println("6. Exit");
 
@@ -35,7 +35,7 @@ public class Main {
                     checkBalance();
                     break;
                 case 4:
-                    depositMoney();
+                    computeInterest();
                     break;
                 case 5:
                     withdrawMoney();
@@ -169,6 +169,29 @@ public class Main {
             System.out.println("----------------------");
             bankAccount.withdrawMoney(amount);
             System.out.println("----------------------");
+        }
+        else {
+            System.out.println("----------------------");
+            System.out.println("Account not found.");
+            System.out.println("----------------------");
+        }
+    }
+
+    private static void computeInterest() {
+        System.out.printf("Enter account number: ");
+        int accountNumber = scanner.nextInt();
+        scanner.nextLine();
+        BankAccount bankAccount = findAccount((accountNumber));
+
+        if (bankAccount != null) {
+
+            bankAccount.addInterest();
+            double interestEarned = bankAccount.getBalance() - bankAccount.getInitialBalance();
+
+            System.out.printf("Computing interest for account %d" + "\n", accountNumber);
+            System.out.printf("Interest earned: %.2f" + "\n", interestEarned);
+            System.out.printf("New balance: %.2f" + "\n", bankAccount.getBalance());
+
         }
         else {
             System.out.println("----------------------");
