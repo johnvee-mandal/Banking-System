@@ -69,6 +69,12 @@ public class Main {
     }
 
     private static void createAccount() {
+
+        if (BankAccount.getInstance() != null) {
+            System.out.println("An account already exists. Only one account is allowed.");
+            return;
+        }
+
         System.out.print("Enter Account Type (savings/checking): ");
         String accountType = scanner.nextLine();
 
@@ -88,8 +94,7 @@ public class Main {
         double deposit = scanner.nextDouble();
         scanner.nextLine();
 
-        BankAccount newAccount = new BankAccount(accountType, accountNumber, name, deposit);
-        bankAccounts.add(newAccount);
+        BankAccount.createAccount(accountType, accountNumber, name, deposit);
         System.out.println("Account created successfully!");
     }
 
@@ -156,9 +161,7 @@ public class Main {
 
         }
         else {
-            System.out.println("----------------------");
             System.out.println("Account not found.");
-            System.out.println("----------------------");
         }
     }
 

@@ -1,25 +1,38 @@
 package org.example;
 
 public class BankAccount {
+
+    private static BankAccount instance;
+
     private int accountNumber;
     private String holderName;
     private double balance;
     private String accountType; // "savings" or "checking"
     private double initialBalance;
 
-    public BankAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
+    private BankAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
         this.accountType = accountType;
         this.accountNumber = accountNumber;
         this.holderName = holderName;
+        this.balance = Math.max(0, initialDeposit);
+        this.initialBalance = this.balance;
+    }
 
-        if(initialDeposit >= 0) {
-            this.balance = initialDeposit;
-            this.initialBalance = initialDeposit;
+    public static BankAccount createAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
+
+        if (instance == null) {
+            instance = new BankAccount(accountType, accountNumber, holderName, initialDeposit);
+            System.out.println("Account created successfully!");
         }
-        else {
-            this.balance = 0;
-            this.initialBalance = 0;
+
+        return instance;
+    }
+
+    public static BankAccount getInstance() {
+        if (instance == null) {
+            System.out.println("No account has been created yet.");
         }
+        return instance;
     }
 
     public int getAccountNumber() {
@@ -76,5 +89,10 @@ public class BankAccount {
         else{
             this.balance *= 1.01; //Adds 1% to this balance
         }
+    }
+
+    public static void resetInstance() {
+        instance = null;
+        System.out.println("Singleton instance reset.");
     }
 }
