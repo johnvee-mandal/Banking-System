@@ -27,7 +27,13 @@ public class Main {
                     createAccount();
                     break;
                 case 2:
-                    depositMoney();
+                    viewAllAccounts();
+                    break;
+                case 3:
+                    checkBalance();
+                    break;
+                case 4:
+                    computeInterest();
                     break;
                 case 3:
                     withdrawMoney();
@@ -125,22 +131,6 @@ public class Main {
         }
     }
 
-    private static void computeInterest() {
-        System.out.print("Enter account number: ");
-        int accountNumber = scanner.nextInt();
-        scanner.nextLine();
-        BankAccount bankAccount = findAccount(accountNumber);
-
-        if (bankAccount != null) {
-            System.out.println("----------------------");
-            System.out.println("Computing interest for Account# " + bankAccount.getAccountNumber());
-            bankAccount.computeAndApplyInterest();
-            System.out.println("----------------------");
-        } else {
-            System.out.println("Account not found.");
-        }
-    }
-
     private static void displayAccount() {
         System.out.print("Enter account number: ");
         int accountNumber = scanner.nextInt();
@@ -155,4 +145,27 @@ public class Main {
             System.out.println("Account not found.");
         }
     }
+    private static void addInterest() {
+        System.out.printf("Enter account number: ");
+        int accountNumber = scanner.nextInt();
+        scanner.nextLine();
+        BankAccount bankAccount = findAccount((accountNumber));
+
+        if (bankAccount != null) {
+
+            bankAccount.addInterest();
+            double interestEarned = bankAccount.getBalance() - bankAccount.getInitialBalance();
+
+            System.out.printf("Computing interest for account %d" + "\n", accountNumber);
+            System.out.printf("Interest earned: %.2f" + "\n", interestEarned);
+            System.out.printf("New balance: %.2f" + "\n", bankAccount.getBalance());
+
+        }
+        else {
+            System.out.println("----------------------");
+            System.out.println("Account not found.");
+            System.out.println("----------------------");
+        }
+    }
+
 }

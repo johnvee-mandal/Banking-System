@@ -5,12 +5,21 @@ public class BankAccount {
     private String holderName;
     private double balance;
     private String accountType; // "savings" or "checking"
+    private double initialBalance;
 
     public BankAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
         this.accountType = accountType;
         this.accountNumber = accountNumber;
         this.holderName = holderName;
-        this.balance = Math.max(0, initialDeposit);
+
+        if(initialDeposit >= 0) {
+            this.balance = initialDeposit;
+            this.initialBalance = initialDeposit;
+        }
+        else {
+            this.balance = 0;
+            this.initialBalance = 0;
+        }
     }
 
     public int getAccountNumber() {
@@ -69,5 +78,13 @@ public class BankAccount {
         System.out.println("Account Number: " + accountNumber);
         System.out.println("Holder Name: " + holderName);
         System.out.println("Balance: " + String.format("%.2f", balance));
+    }
+
+    public double getInitialBalance() {
+        return initialBalance;
+    }
+
+    public void addInterest (){
+        balance *= 1.06; //Adds 6% to balance
     }
 }
