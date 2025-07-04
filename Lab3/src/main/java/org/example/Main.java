@@ -61,7 +61,7 @@ public class Main {
 
     private static void createAccount() {
 
-        if (BankAccount.getInstance() != null) {
+        if (bankAccount != null) {
             System.out.println("An account already exists. Only one account is allowed.");
             return;
         }
