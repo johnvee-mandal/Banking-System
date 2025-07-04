@@ -58,21 +58,6 @@ public class BankAccount {
         }
     }
 
-    public void computeAndApplyInterest() {
-        double interestRate;
-        if ("savings".equalsIgnoreCase(this.accountType)) {
-            interestRate = 0.06; // 6% for savings
-        } else {
-            interestRate = 0.01; // 1% for checking
-        }
-
-        double interestEarned = this.balance * interestRate;
-        this.balance += interestEarned;
-
-        System.out.println("Interest earned: " + String.format("%.2f", interestEarned));
-        System.out.println("New balance: " + String.format("%.2f", this.balance));
-    }
-
     public void displayInfo() {
         System.out.println("Account Type: " + accountType);
         System.out.println("Account Number: " + accountNumber);
@@ -85,12 +70,11 @@ public class BankAccount {
     }
 
     public void addInterest (){
-
-        if(this.accountType.equalsIgnoreCase("Savings")){
-            this.balance *= 1.06; //Adds 6% tthiso balance
+        if(this.getAccountType().equalsIgnoreCase("Savings")){
+            this.balance *= 1.06; //Adds 6% to this balance
         }
         else{
-            this.balance *= 1.01;
+            this.balance *= 1.01; //Adds 1% to this balance
         }
     }
 }
