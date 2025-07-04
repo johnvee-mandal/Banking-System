@@ -85,6 +85,12 @@ public class BankAccount {
     }
 
     public void addInterest (){
-        balance *= 1.06; //Adds 6% to balance
+
+        if(this.accountType.equalsIgnoreCase("Savings")){
+            this.balance *= 1.06; //Adds 6% tthiso balance
+        }
+        else{
+            this.balance *= 1.01;
+        }
     }
 }

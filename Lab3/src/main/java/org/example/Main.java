@@ -27,19 +27,13 @@ public class Main {
                     createAccount();
                     break;
                 case 2:
-                    viewAllAccounts();
-                    break;
-                case 3:
-                    checkBalance();
-                    break;
-                case 4:
-                    computeInterest();
+                    depositMoney();
                     break;
                 case 3:
                     withdrawMoney();
                     break;
                 case 4:
-                    computeInterest();
+                    addInterest();
                     break;
                 case 5:
                     displayAccount();
