@@ -1,17 +1,17 @@
 package org.example;
 
-public class BankAccount {
-    private int accountNumber;
-    private String holderName;
-    private double balance;
-    private String accountType; // "savings" or "checking"
+public abstract class BankAccount {
+    protected int accountNumber;
+    protected String holderName;
+    protected double balance;
 
-    public BankAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
-        this.accountType = accountType;
+    public BankAccount(int accountNumber, String holderName, double initialDeposit) {
         this.accountNumber = accountNumber;
         this.holderName = holderName;
         this.balance = Math.max(0, initialDeposit);
     }
+
+    public abstract void computeInterest();
 
     public int getAccountNumber() {
         return accountNumber;
@@ -23,10 +23,6 @@ public class BankAccount {
 
     public double getBalance() {
         return balance;
-    }
-
-    public String getAccountType() {
-        return accountType;
     }
 
     public void depositMoney(double amount) {
@@ -49,25 +45,41 @@ public class BankAccount {
         }
     }
 
-    public void computeAndApplyInterest() {
-        double interestRate;
-        if ("savings".equalsIgnoreCase(this.accountType)) {
-            interestRate = 0.06; // 6% for savings
-        } else {
-            interestRate = 0.01; // 1% for checking
-        }
-
-        double interestEarned = this.balance * interestRate;
-        this.balance += interestEarned;
-
-        System.out.println("Interest earned: " + String.format("%.2f", interestEarned));
-        System.out.println("New balance: " + String.format("%.2f", this.balance));
-    }
-
     public void displayInfo() {
-        System.out.println("Account Type: " + accountType);
         System.out.println("Account Number: " + accountNumber);
         System.out.println("Holder Name: " + holderName);
         System.out.println("Balance: " + String.format("%.2f", balance));
+    }
+}
+
+class SavingsAccount extends BankAccount {
+    private static final double INTEREST_RATE = 0.06; // 6%
+
+    public SavingsAccount(int accountNumber, String holderName, double initialDeposit) {
+        super(accountNumber, holderName, initialDeposit);
+    }
+
+    @Override
+    public void computeInterest() {
+        double interest = balance * INTEREST_RATE;
+        balance += interest;
+        System.out.println("Interest earned: " + String.format("%.2f", interest));
+        System.out.println("New balance: " + String.format("%.2f", balance));
+    }
+}
+
+class CheckingAccount extends BankAccount {
+    private static final double INTEREST_RATE = 0.01; // 1%
+
+    public CheckingAccount(int accountNumber, String holderName, double initialDeposit) {
+        super(accountNumber, holderName, initialDeposit);
+    }
+
+    @Override
+    public void computeInterest() {
+        double interest = balance * INTEREST_RATE;
+        balance += interest;
+        System.out.println("Interest earned: " + String.format("%.2f", interest));
+        System.out.println("New balance: " + String.format("%.2f", balance));
     }
 }
