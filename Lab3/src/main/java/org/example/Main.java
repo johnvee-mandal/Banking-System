@@ -1,6 +1,8 @@
 package org.example;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class Main {
 
@@ -8,11 +10,16 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+<<<<<<< HEAD
 
         boolean hasNotExit = true;
 
         while(hasNotExit!=false) {
             System.out.println("=== Welcome to Bank#2 ===");
+=======
+        while (true) {
+            System.out.println("\n=== Welcome to Bank#2 ===");
+>>>>>>> Johnvee-Branch
             System.out.println("1. Create Account");
             System.out.println("2. Deposit");
             System.out.println("3. Withdraw");
@@ -20,9 +27,14 @@ public class Main {
             System.out.println("5. Display Account");
             System.out.println("6. Exit");
 
+<<<<<<< HEAD
             System.out.printf("Enter choice: ");
             int currentChoice = scanner.nextInt();
             scanner.nextLine();
+=======
+            System.out.print("Enter choice: ");
+            int currentChoice = getUserChoice();
+>>>>>>> Johnvee-Branch
 
             switch (currentChoice) {
                 case 1:
@@ -41,39 +53,35 @@ public class Main {
                     displayAccount();
                     break;
                 case 6:
-                    hasNotExit=false;
                     System.out.println("----------------------------------------");
                     System.out.println("Thank you for using our banking service!");
                     System.out.println("----------------------------------------");
-                    System.exit(0);
+                    return; // Clean way to exit the loop and program
                 default:
-                    System.out.println("Invalid option");
-            }
-
-            System.out.println("\n");
-            System.out.printf("Would you like to return to the menu? (yes/no): ");
-
-            String response2 = scanner.nextLine();
-            if (response2.equals("yes")) {
-                continue;
-            }
-
-            else if (response2.equals("no")) {
-
-                System.out.println("----------------------------------------");
-                System.out.println("Thank you for using our banking service!");
-                System.out.println("----------------------------------------");
-                return;
+                    System.out.println("Invalid option. Please try again.");
             }
         }
-        System.out.println("----------------------------------------");
-        System.out.println("Thank you for using our banking service!");
-        System.out.println("----------------------------------------");
+    }
+
+<<<<<<< HEAD
+    private static BankAccount findAccount(int number) {
+        for (BankAccount bankAccount : bankAccounts) {
+            if(bankAccount.getAccountNumber() == number) {
+=======
+    private static int getUserChoice() {
+        try {
+            return scanner.nextInt();
+        } catch (InputMismatchException e) {
+            return -1; // Return an invalid choice
+        } finally {
+            scanner.nextLine(); // Always consume the newline character
+        }
     }
 
     private static BankAccount findAccount(int number) {
         for (BankAccount bankAccount : bankAccounts) {
-            if(bankAccount.getAccountNumber() == number) {
+            if (bankAccount.getAccountNumber() == number) {
+>>>>>>> Johnvee-Branch
                 return bankAccount;
             }
         }
@@ -81,6 +89,7 @@ public class Main {
     }
 
     private static void createAccount() {
+<<<<<<< HEAD
         System.out.println("Enter Account Type (savings/checking): ");
         String accountType = scanner.nextLine();
 
@@ -121,51 +130,95 @@ public class Main {
 
         System.out.printf("Enter Account Type (savings/checking): ");
         String accountType = scanner.nextLine();
+=======
+        System.out.print("Enter Account Type (savings/checking): ");
+        String accountType = scanner.nextLine();
+
+        if (!"savings".equalsIgnoreCase(accountType) && !"checking".equalsIgnoreCase(accountType)) {
+            System.out.println("Invalid account type. Please enter 'savings' or 'checking'.");
+            return;
+        }
+
+        System.out.print("Enter Account Number: ");
+        int accountNumber = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Enter Holder Name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter initial deposit amount: ");
+        double deposit = scanner.nextDouble();
+        scanner.nextLine();
+
+        BankAccount newAccount = new BankAccount(accountType, accountNumber, name, deposit);
+        bankAccounts.add(newAccount);
+        System.out.println("Account created successfully!");
+    }
+
+    private static void depositMoney() {
+        System.out.print("Enter account number: ");
+        int accountNumber = scanner.nextInt();
+        scanner.nextLine();
+        BankAccount bankAccount = findAccount(accountNumber);
+>>>>>>> Johnvee-Branch
 
         if (bankAccount != null) {
-            System.out.printf("Enter deposit amount: ");
+            System.out.print("Enter deposit amount: ");
             double amount = scanner.nextDouble();
             scanner.nextLine();
+<<<<<<< HEAD
 
             bankAccount.depositMoney(accountType, amount); //added accountType
         }
         else {
             System.out.println("----------------------");
+=======
+            bankAccount.depositMoney(amount);
+        } else {
+>>>>>>> Johnvee-Branch
             System.out.println("Account not found.");
-            System.out.println("----------------------");
         }
     }
 
     private static void withdrawMoney() {
-        System.out.printf("Enter account number: ");
+        System.out.print("Enter account number: ");
         int accountNumber = scanner.nextInt();
         scanner.nextLine();
-        BankAccount bankAccount = findAccount((accountNumber));
+        BankAccount bankAccount = findAccount(accountNumber);
 
         System.out.printf("Enter Account Type (savings/checking): ");
         String accountType = scanner.nextLine();
 
         if (bankAccount != null) {
-            System.out.printf("Enter withdrawal amount: ");
+            System.out.print("Enter withdrawal amount: ");
             double amount = scanner.nextDouble();
             scanner.nextLine();
+<<<<<<< HEAD
             System.out.println("----------------------");
             bankAccount.withdrawMoney(accountType, amount); //added accountType
             System.out.println("----------------------");
         }
         else {
             System.out.println("----------------------");
+=======
+            bankAccount.withdrawMoney(amount);
+        } else {
+>>>>>>> Johnvee-Branch
             System.out.println("Account not found.");
-            System.out.println("----------------------");
         }
     }
 
     private static void computeInterest() {
+<<<<<<< HEAD
         System.out.printf("Enter account number: ");
+=======
+        System.out.print("Enter account number: ");
+>>>>>>> Johnvee-Branch
         int accountNumber = scanner.nextInt();
         scanner.nextLine();
         BankAccount bankAccount = findAccount(accountNumber);
 
+<<<<<<< HEAD
         System.out.printf("Enter Account Type (savings/checking): ");
         String accountType = scanner.nextLine();
 
@@ -188,10 +241,25 @@ public class Main {
 
     private static void displayAccount() {
         System.out.printf("Enter account number: ");
+=======
+        if (bankAccount != null) {
+            System.out.println("----------------------");
+            System.out.println("Computing interest for Account# " + bankAccount.getAccountNumber());
+            bankAccount.computeAndApplyInterest();
+            System.out.println("----------------------");
+        } else {
+            System.out.println("Account not found.");
+        }
+    }
+
+    private static void displayAccount() {
+        System.out.print("Enter account number: ");
+>>>>>>> Johnvee-Branch
         int accountNumber = scanner.nextInt();
         scanner.nextLine();
         BankAccount bankAccount = findAccount(accountNumber);
 
+<<<<<<< HEAD
         System.out.printf("Enter Account Type (savings/checking): ");
         String accountType = scanner.nextLine();
 
@@ -211,3 +279,14 @@ public class Main {
     }
 
 }
+=======
+        if (bankAccount != null) {
+            System.out.println("--- Account Information ---");
+            bankAccount.displayInfo();
+            System.out.println("---------------------------");
+        } else {
+            System.out.println("Account not found.");
+        }
+    }
+}
+>>>>>>> Johnvee-Branch
