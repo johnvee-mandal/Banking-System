@@ -33,7 +33,7 @@ public class Main {
                     withdrawMoney();
                     break;
                 case 4:
-                    computeInterest();
+                    addInterest();
                     break;
                 case 5:
                     displayAccount();
@@ -83,7 +83,6 @@ public class Main {
         double deposit = scanner.nextDouble();
         scanner.nextLine();
 
-        // The Main class asks the nested factory to create the object.
         BankAccount newAccount = AccountFactory.createAccount(accountType, accountNumber, name, deposit);
 
         if (newAccount != null) {
@@ -126,16 +125,21 @@ public class Main {
         }
     }
 
-    private static void computeInterest() {
+    private static void addInterest() {
         System.out.print("Enter account number: ");
         int accountNumber = scanner.nextInt();
         scanner.nextLine();
         BankAccount bankAccount = findAccount(accountNumber);
 
         if (bankAccount != null) {
+            double balanceBeforeInterest = bankAccount.getBalance();
+            bankAccount.addInterest();
+            double interestEarned = bankAccount.getBalance() - balanceBeforeInterest;
+
             System.out.println("----------------------");
-            System.out.println("Computing interest for Account# " + bankAccount.getAccountNumber());
-            bankAccount.computeInterest();
+            System.out.println("Computing interest for Account# " + accountNumber);
+            System.out.printf("Interest earned: %.2f%n", interestEarned);
+            System.out.printf("New balance: %.2f%n", bankAccount.getBalance());
             System.out.println("----------------------");
         } else {
             System.out.println("Account not found.");
@@ -160,16 +164,9 @@ public class Main {
 
 class AccountFactory {
     public static BankAccount createAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
-        if (accountType == null) {
-            return null;
+        if ("savings".equalsIgnoreCase(accountType) || "checking".equalsIgnoreCase(accountType)) {
+            return new BankAccount(accountType, accountNumber, holderName, initialDeposit);
         }
-
-        if (accountType.equalsIgnoreCase("savings")) {
-            return new SavingsAccount(accountNumber, holderName, initialDeposit);
-        } else if (accountType.equalsIgnoreCase("checking")) {
-            return new CheckingAccount(accountNumber, holderName, initialDeposit);
-        }
-
         return null;
     }
 }
