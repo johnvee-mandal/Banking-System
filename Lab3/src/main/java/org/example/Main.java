@@ -12,15 +12,15 @@ public class Main {
         boolean hasNotExit = true;
 
         while(hasNotExit!=false) {
-            System.out.println("=== Bank Menu ===");
+            System.out.println("=== Welcome to Bank#2 ===");
             System.out.println("1. Create Account");
-            System.out.println("2. View All Accounts");
-            System.out.println("3. Check Balance");
-            System.out.println("4. Deposit");
-            System.out.println("5. Withdraw");
+            System.out.println("2. Deposit");
+            System.out.println("3. Withdraw");
+            System.out.println("4. Compute Interest");
+            System.out.println("5. Display Account");
             System.out.println("6. Exit");
 
-            System.out.printf("Enter choice (1-5): ");
+            System.out.printf("Enter choice: ");
             int currentChoice = scanner.nextInt();
             scanner.nextLine();
 
@@ -29,16 +29,16 @@ public class Main {
                     createAccount();
                     break;
                 case 2:
-                    viewAllAccounts();
-                    break;
-                case 3:
-                    checkBalance();
-                    break;
-                case 4:
                     depositMoney();
                     break;
-                case 5:
+                case 3:
                     withdrawMoney();
+                    break;
+                case 4:
+                    computeInterest();
+                    break;
+                case 5:
+                    displayAccount();
                     break;
                 case 6:
                     hasNotExit=false;
@@ -71,7 +71,19 @@ public class Main {
         System.out.println("----------------------------------------");
     }
 
+    private static BankAccount findAccount(int number) {
+        for (BankAccount bankAccount : bankAccounts) {
+            if(bankAccount.getAccountNumber() == number) {
+                return bankAccount;
+            }
+        }
+        return null;
+    }
+
     private static void createAccount() {
+        System.out.println("Enter Account Type (savings/checking): ");
+        String accountType = scanner.nextLine();
+
         System.out.printf("Enter Account Number: ");
         int accountNumber = scanner.nextInt();
         scanner.nextLine();
@@ -94,60 +106,28 @@ public class Main {
             }
         }
 
-        BankAccount newAccount = new BankAccount(accountNumber, name, deposit);
+        BankAccount newAccount = new BankAccount(accountType, accountNumber, name, deposit); //added accountType
         bankAccounts.add(newAccount);
         System.out.println("Account created successfully!");
 
     }
 
-    private static void viewAllAccounts() {
-        for (BankAccount bankAccount: bankAccounts) {
-            System.out.println("----------------------");
-            bankAccount.displayInfo();
-            System.out.println("----------------------");
-        }
-    }
-
-    private static BankAccount findAccount(int number) {
-        for (BankAccount bankAccount : bankAccounts) {
-            if(bankAccount.getAccountNumber() == number) {
-                return bankAccount;
-            }
-        }
-        return null;
-    }
-
-    private static void checkBalance() {
-        System.out.printf("Enter account number: ");
-        int accountNumber = scanner.nextInt();
-        scanner.nextLine();
-        BankAccount bankAccount = findAccount(accountNumber);
-
-        if(bankAccount != null) {
-            System.out.println("----------------------");
-            System.out.println("Balance: " + bankAccount.getBalance());
-            System.out.println("----------------------");
-        }
-
-        else {
-            System.out.println("----------------------");
-            System.out.println("Account does not exist.");
-            System.out.println("----------------------");
-        }
-    }
-
     private static void depositMoney() {
+
         System.out.printf("Enter account number: ");
         int accountNumber = scanner.nextInt();
         scanner.nextLine();
         BankAccount bankAccount = findAccount((accountNumber));
+
+        System.out.printf("Enter Account Type (savings/checking): ");
+        String accountType = scanner.nextLine();
 
         if (bankAccount != null) {
             System.out.printf("Enter deposit amount: ");
             double amount = scanner.nextDouble();
             scanner.nextLine();
 
-            bankAccount.depositMoney(amount);
+            bankAccount.depositMoney(accountType, amount); //added accountType
         }
         else {
             System.out.println("----------------------");
@@ -162,17 +142,70 @@ public class Main {
         scanner.nextLine();
         BankAccount bankAccount = findAccount((accountNumber));
 
+        System.out.printf("Enter Account Type (savings/checking): ");
+        String accountType = scanner.nextLine();
+
         if (bankAccount != null) {
             System.out.printf("Enter withdrawal amount: ");
             double amount = scanner.nextDouble();
             scanner.nextLine();
             System.out.println("----------------------");
-            bankAccount.withdrawMoney(amount);
+            bankAccount.withdrawMoney(accountType, amount); //added accountType
             System.out.println("----------------------");
         }
         else {
             System.out.println("----------------------");
             System.out.println("Account not found.");
+            System.out.println("----------------------");
+        }
+    }
+
+    private static void computeInterest() {
+        System.out.printf("Enter account number: ");
+        int accountNumber = scanner.nextInt();
+        scanner.nextLine();
+        BankAccount bankAccount = findAccount(accountNumber);
+
+        System.out.printf("Enter Account Type (savings/checking): ");
+        String accountType = scanner.nextLine();
+
+        if(bankAccount != null) {
+            System.out.println("----------------------");
+            System.out.println("Computing interest for Account# " + bankAccount);
+            System.out.println("Interest earned: "); //add interest here
+            System.out.println("New balance: "); //add new balance of account here
+            System.out.println("----------------------");
+        }
+
+        else {
+            System.out.println("----------------------");
+            System.out.println("Account does not exist.");
+            System.out.println("----------------------");
+        }
+
+    }
+
+
+    private static void displayAccount() {
+        System.out.printf("Enter account number: ");
+        int accountNumber = scanner.nextInt();
+        scanner.nextLine();
+        BankAccount bankAccount = findAccount(accountNumber);
+
+        System.out.printf("Enter Account Type (savings/checking): ");
+        String accountType = scanner.nextLine();
+
+        if(bankAccount != null) {
+            System.out.println("--- Account Information ---");
+            System.out.println("Account Number: " + bankAccount.getAccountNumber());
+            System.out.println("Holder Name: " + bankAccount.getHolderName());
+            System.out.println("Balance: " + bankAccount.getAccountNumber()); //Fix this I think?
+            System.out.println("---------------------------");
+        }
+
+        else {
+            System.out.println("----------------------");
+            System.out.println("Account does not exist.");
             System.out.println("----------------------");
         }
     }

@@ -53,4 +53,9 @@ public class BankAccount {
     public double getBalance() {
         return balance;
     }
+
+    public String getHolderName() { return holderName;
+    }
 }
+
+
