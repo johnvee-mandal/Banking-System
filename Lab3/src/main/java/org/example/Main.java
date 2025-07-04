@@ -42,7 +42,7 @@ public class Main {
                     System.out.println("----------------------------------------");
                     System.out.println("Thank you for using our banking service!");
                     System.out.println("----------------------------------------");
-                    return; // Clean way to exit the loop and program
+                    return;
                 default:
                     System.out.println("Invalid option. Please try again.");
             }
@@ -53,9 +53,9 @@ public class Main {
         try {
             return scanner.nextInt();
         } catch (InputMismatchException e) {
-            return -1; // Return an invalid choice
+            return -1;
         } finally {
-            scanner.nextLine(); // Always consume the newline character
+            scanner.nextLine();
         }
     }
 
@@ -72,11 +72,6 @@ public class Main {
         System.out.print("Enter Account Type (savings/checking): ");
         String accountType = scanner.nextLine();
 
-        if (!"savings".equalsIgnoreCase(accountType) && !"checking".equalsIgnoreCase(accountType)) {
-            System.out.println("Invalid account type. Please enter 'savings' or 'checking'.");
-            return;
-        }
-
         System.out.print("Enter Account Number: ");
         int accountNumber = scanner.nextInt();
         scanner.nextLine();
@@ -88,9 +83,14 @@ public class Main {
         double deposit = scanner.nextDouble();
         scanner.nextLine();
 
-        BankAccount newAccount = new BankAccount(accountType, accountNumber, name, deposit);
-        bankAccounts.add(newAccount);
-        System.out.println("Account created successfully!");
+        BankAccount newAccount = AccountFactory.createAccount(accountType, accountNumber, name, deposit);
+
+        if (newAccount != null) {
+            bankAccounts.add(newAccount);
+            System.out.println("Account created successfully!");
+        } else {
+            System.out.println("Invalid account type. Please enter 'savings' or 'checking'.");
+        }
     }
 
     private static void depositMoney() {
@@ -134,7 +134,7 @@ public class Main {
         if (bankAccount != null) {
             System.out.println("----------------------");
             System.out.println("Computing interest for Account# " + bankAccount.getAccountNumber());
-            bankAccount.computeAndApplyInterest();
+            bankAccount.computeInterest();
             System.out.println("----------------------");
         } else {
             System.out.println("Account not found.");
@@ -154,5 +154,21 @@ public class Main {
         } else {
             System.out.println("Account not found.");
         }
+    }
+}
+
+class AccountFactory {
+    public static BankAccount createAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
+        if (accountType == null) {
+            return null;
+        }
+
+        if (accountType.equalsIgnoreCase("savings")) {
+            return new SavingsAccount(accountNumber, holderName, initialDeposit);
+        } else if (accountType.equalsIgnoreCase("checking")) {
+            return new CheckingAccount(accountNumber, holderName, initialDeposit);
+        }
+
+        return null;
     }
 }
