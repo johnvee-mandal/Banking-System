@@ -2,169 +2,157 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    private static final Bank bank = Bank.getInstance();
-    private static final Scanner scanner = new Scanner(System.in);
+
+    private static ArrayList<BankAccount> bankAccounts = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         while (true) {
-            displayMenu();
-            int choice = getUserChoice();
+            System.out.println("\n=== Welcome to Bank#2 ===");
+            System.out.println("1. Create Account");
+            System.out.println("2. Deposit");
+            System.out.println("3. Withdraw");
+            System.out.println("4. Compute Interest");
+            System.out.println("5. Display Account");
+            System.out.println("6. Exit");
 
-            switch (choice) {
-                case 1: createNewAccount(); break;
-                case 2: deposit(); break;
-                case 3: withdraw(); break;
-                case 4: computeInterest(); break;
-                case 5: displayAccountDetails(); break;
+            System.out.print("Enter choice: ");
+            int currentChoice = getUserChoice();
+
+            switch (currentChoice) {
+                case 1:
+                    createAccount();
+                    break;
+                case 2:
+                    depositMoney();
+                    break;
+                case 3:
+                    withdrawMoney();
+                    break;
+                case 4:
+                    computeInterest();
+                    break;
+                case 5:
+                    displayAccount();
+                    break;
                 case 6:
+                    System.out.println("----------------------------------------");
                     System.out.println("Thank you for using our banking service!");
-                    scanner.close();
-                    return;
+                    System.out.println("----------------------------------------");
+                    return; // Clean way to exit the loop and program
                 default:
-                    System.out.println("Invalid choice. Please enter a number between 1 and 6.");
+                    System.out.println("Invalid option. Please try again.");
             }
         }
-    }
-
-    private static void displayMenu() {
-        System.out.println("\n=== Banking System ===");
-        System.out.println("1. Create Account");
-        System.out.println("2. Deposit");
-        System.out.println("3. Withdraw");
-        System.out.println("4. Compute Interest");
-        System.out.println("5. Display Account Details");
-        System.out.println("6. Exit");
-        System.out.print("Enter choice: ");
     }
 
     private static int getUserChoice() {
         try {
             return scanner.nextInt();
         } catch (InputMismatchException e) {
-            return -1;
+            return -1; // Return an invalid choice
         } finally {
-            scanner.nextLine();
+            scanner.nextLine(); // Always consume the newline character
         }
     }
 
-    private static void createNewAccount() {
-        System.out.print("Enter Account Type (savings/checking): ");
-        String type = scanner.nextLine();
-        System.out.print("Enter Account Number: ");
-        String accNum = scanner.nextLine();
-        System.out.print("Enter Holder Name: ");
-        String name = scanner.nextLine();
-        System.out.print("Enter Initial Deposit: ");
-        double deposit = getDoubleInput();
-
-        BankAccount newAccount = AccountFactory.createAccount(type, accNum, name, deposit);
-        bank.addAccount(newAccount);
-    }
-
-    private static BankAccount findAccountByNumber() {
-        System.out.print("Enter Account Number: ");
-        String accNum = scanner.nextLine();
-        BankAccount account = bank.findAccount(accNum);
-        if (account == null) {
-            System.out.println("Account not found.");
-        }
-        return account;
-    }
-
-    private static void deposit() {
-        BankAccount account = findAccountByNumber();
-        if (account != null) {
-            System.out.print("Enter amount to deposit: ");
-            double amount = getDoubleInput();
-            account.deposit(amount);
-        }
-    }
-
-    private static void withdraw() {
-        BankAccount account = findAccountByNumber();
-        if (account != null) {
-            System.out.print("Enter amount to withdraw: ");
-            double amount = getDoubleInput();
-            account.withdraw(amount);
-        }
-    }
-    
-    private static void computeInterest() {
-        BankAccount account = findAccountByNumber();
-        if (account != null) {
-            account.computeInterest();
-        }
-    }
-
-    private static void displayAccountDetails() {
-        BankAccount account = findAccountByNumber();
-        if (account != null) {
-            System.out.println("----------------------");
-            account.displayInfo();
-            System.out.println("----------------------");
-        }
-    }
-
-    private static double getDoubleInput() {
-        try {
-            return scanner.nextDouble();
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid input. Please enter a valid number.");
-            return 0;
-        } finally {
-            scanner.nextLine();
-        }
-    }
-}
-
-class Bank {
-    private static Bank instance;
-    private final List<BankAccount> accounts;
-
-    private Bank() {
-        accounts = new ArrayList<>();
-    }
-
-    public static Bank getInstance() {
-        if (instance == null) {
-            instance = new Bank();
-        }
-        return instance;
-    }
-
-    public void addAccount(BankAccount account) {
-        if (account != null) {
-            accounts.add(account);
-            System.out.println("Account created successfully!");
-        } else {
-            System.out.println("Failed to create account: Invalid account type.");
-        }
-    }
-
-    public BankAccount findAccount(String accountNumber) {
-        for (BankAccount account : accounts) {
-            if (account.getAccountNumber().equals(accountNumber)) {
-                return account;
+    private static BankAccount findAccount(int number) {
+        for (BankAccount bankAccount : bankAccounts) {
+            if (bankAccount.getAccountNumber() == number) {
+                return bankAccount;
             }
         }
         return null;
     }
-}
 
-class AccountFactory {
-    public static BankAccount createAccount(String accountType, String accountNumber, String holderName, double initialDeposit) {
-        if (accountType == null) {
-            return null;
+    private static void createAccount() {
+        System.out.print("Enter Account Type (savings/checking): ");
+        String accountType = scanner.nextLine();
+
+        if (!"savings".equalsIgnoreCase(accountType) && !"checking".equalsIgnoreCase(accountType)) {
+            System.out.println("Invalid account type. Please enter 'savings' or 'checking'.");
+            return;
         }
-        if (accountType.equalsIgnoreCase("savings")) {
-            return new SavingsAccount(accountNumber, holderName, initialDeposit);
-        } else if (accountType.equalsIgnoreCase("checking")) {
-            return new CheckingAccount(accountNumber, holderName, initialDeposit);
+
+        System.out.print("Enter Account Number: ");
+        int accountNumber = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Enter Holder Name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter initial deposit amount: ");
+        double deposit = scanner.nextDouble();
+        scanner.nextLine();
+
+        BankAccount newAccount = new BankAccount(accountType, accountNumber, name, deposit);
+        bankAccounts.add(newAccount);
+        System.out.println("Account created successfully!");
+    }
+
+    private static void depositMoney() {
+        System.out.print("Enter account number: ");
+        int accountNumber = scanner.nextInt();
+        scanner.nextLine();
+        BankAccount bankAccount = findAccount(accountNumber);
+
+        if (bankAccount != null) {
+            System.out.print("Enter deposit amount: ");
+            double amount = scanner.nextDouble();
+            scanner.nextLine();
+            bankAccount.depositMoney(amount);
+        } else {
+            System.out.println("Account not found.");
         }
-        return null;
+    }
+
+    private static void withdrawMoney() {
+        System.out.print("Enter account number: ");
+        int accountNumber = scanner.nextInt();
+        scanner.nextLine();
+        BankAccount bankAccount = findAccount(accountNumber);
+
+        if (bankAccount != null) {
+            System.out.print("Enter withdrawal amount: ");
+            double amount = scanner.nextDouble();
+            scanner.nextLine();
+            bankAccount.withdrawMoney(amount);
+        } else {
+            System.out.println("Account not found.");
+        }
+    }
+
+    private static void computeInterest() {
+        System.out.print("Enter account number: ");
+        int accountNumber = scanner.nextInt();
+        scanner.nextLine();
+        BankAccount bankAccount = findAccount(accountNumber);
+
+        if (bankAccount != null) {
+            System.out.println("----------------------");
+            System.out.println("Computing interest for Account# " + bankAccount.getAccountNumber());
+            bankAccount.computeAndApplyInterest();
+            System.out.println("----------------------");
+        } else {
+            System.out.println("Account not found.");
+        }
+    }
+
+    private static void displayAccount() {
+        System.out.print("Enter account number: ");
+        int accountNumber = scanner.nextInt();
+        scanner.nextLine();
+        BankAccount bankAccount = findAccount(accountNumber);
+
+        if (bankAccount != null) {
+            System.out.println("--- Account Information ---");
+            bankAccount.displayInfo();
+            System.out.println("---------------------------");
+        } else {
+            System.out.println("Account not found.");
+        }
     }
 }
