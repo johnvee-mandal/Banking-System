@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static ArrayList<BankAccount> bankAccounts = new ArrayList<>();
+    private static BankAccount bankAccount;
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -59,15 +59,6 @@ public class Main {
         }
     }
 
-    private static BankAccount findAccount(int number) {
-        for (BankAccount bankAccount : bankAccounts) {
-            if (bankAccount.getAccountNumber() == number) {
-                return bankAccount;
-            }
-        }
-        return null;
-    }
-
     private static void createAccount() {
 
         if (BankAccount.getInstance() != null) {
@@ -94,15 +85,11 @@ public class Main {
         double deposit = scanner.nextDouble();
         scanner.nextLine();
 
-        BankAccount.createAccount(accountType, accountNumber, name, deposit);
+        bankAccount = new BankAccount(accountType, accountNumber, name, deposit);
         System.out.println("Account created successfully!");
     }
 
     private static void depositMoney() {
-        System.out.print("Enter account number: ");
-        int accountNumber = scanner.nextInt();
-        scanner.nextLine();
-        BankAccount bankAccount = findAccount(accountNumber);
 
         if (bankAccount != null) {
             System.out.print("Enter deposit amount: ");
@@ -115,11 +102,6 @@ public class Main {
     }
 
     private static void withdrawMoney() {
-        System.out.print("Enter account number: ");
-        int accountNumber = scanner.nextInt();
-        scanner.nextLine();
-        BankAccount bankAccount = findAccount(accountNumber);
-
         if (bankAccount != null) {
             System.out.print("Enter withdrawal amount: ");
             double amount = scanner.nextDouble();
@@ -131,10 +113,6 @@ public class Main {
     }
 
     private static void displayAccount() {
-        System.out.print("Enter account number: ");
-        int accountNumber = scanner.nextInt();
-        scanner.nextLine();
-        BankAccount bankAccount = findAccount(accountNumber);
 
         if (bankAccount != null) {
             System.out.println("--- Account Information ---");
@@ -145,17 +123,13 @@ public class Main {
         }
     }
     private static void addInterest() {
-        System.out.printf("Enter account number: ");
-        int accountNumber = scanner.nextInt();
-        scanner.nextLine();
-        BankAccount bankAccount = findAccount((accountNumber));
 
         if (bankAccount != null) {
 
             bankAccount.addInterest();
             double interestEarned = bankAccount.getBalance() - bankAccount.getInitialBalance();
 
-            System.out.printf("Computing interest for account %d" + "\n", accountNumber);
+            System.out.printf("Computing interest for account %d" + "\n", bankAccount.getAccountNumber());
             System.out.printf("Interest earned: %.2f" + "\n", interestEarned);
             System.out.printf("New balance: %.2f" + "\n", bankAccount.getBalance());
 

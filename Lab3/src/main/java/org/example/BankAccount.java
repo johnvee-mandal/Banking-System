@@ -10,7 +10,7 @@ public class BankAccount {
     private String accountType; // "savings" or "checking"
     private double initialBalance;
 
-    private BankAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
+    public BankAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
         this.accountType = accountType;
         this.accountNumber = accountNumber;
         this.holderName = holderName;
