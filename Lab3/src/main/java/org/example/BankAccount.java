@@ -4,7 +4,7 @@ public class BankAccount {
     private int accountNumber;
     private String holderName;
     private double balance;
-    private String accountType; 
+    private String accountType; // "savings" or "checking"
 
     public BankAccount(String accountType, int accountNumber, String holderName, double initialDeposit) {
         this.accountType = accountType;
@@ -52,9 +52,9 @@ public class BankAccount {
     public void computeAndApplyInterest() {
         double interestRate;
         if ("savings".equalsIgnoreCase(this.accountType)) {
-            interestRate = 0.06; // 6% 
+            interestRate = 0.06; // 6% for savings
         } else {
-            interestRate = 0.01; 
+            interestRate = 0.01; // 1% for checking
         }
 
         double interestEarned = this.balance * interestRate;
