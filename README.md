@@ -18,6 +18,10 @@ interest based on account type (savings or checking), and displaying the current
 The application aims to demonstrate fundamental object-oriented programming concepts and team collaboration within 
 a simplified banking context.
 
+**Project Structure:** </br>
+
+![S2Lab3](projectStructure.png)</br>
+
 **Screenshot of output:** </br>
 
 ![S2Lab3](Lab3-1.png) </br>
